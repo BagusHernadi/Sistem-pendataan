@@ -67,13 +67,19 @@
         </div>
 
         <div class="mb-2">
-            <label>Status Anggotak</label>
+            <label>Status Anggota</label>
             <select name="status" class="form-control">
                 <option {{ $resident->status=='active'?'selected':'' }}>active</option>
                 <option {{ $resident->status=='moved'?'selected':'' }}>moved</option>
                 <option {{ $resident->status=='deceased'?'selected':'' }}>deceased</option>
             </select>
         </div>
+        @if($resident->photo)
+        <img src="{{ asset('storage/'.$resident->photo) }}" width="100" class="mb-2"><br>
+        @endif
+
+        <input type="file" name="photo" accept="image/*">
+
 
         <button type="submit" class="btn btn-primary mt-3">Update</button>
         <a href="{{ route('resident.index') }}" class="btn btn-secondary mt-3">Kembali</a>

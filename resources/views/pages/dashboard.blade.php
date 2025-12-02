@@ -104,9 +104,7 @@
 
         <div class="menu-wrap">
             <a href="{{ route('resident.index') }}" class="menu-card">Kelola Data</a>
-            <a href="#" class="menu-card">Laporan</a>
-            <a href="#" class="menu-card">Surat & Administrasi</a>
-            <a href="#" class="menu-card">Pengaturan Sistem</a>
+            <a href="{{ route('report_overview') }}" class="menu-card">Laporan</a>
         </div>
     </div>
 </div>

@@ -61,17 +61,12 @@
 
                         <!-- ACTION BUTTONS -->
                         <td class="text-center">
-                            <a href="{{ route('resident.edit', $resident->id) }}" class="btn btn-warning btn-sm">
-                                ✏ Edit
-                            </a>
+                        <a href="{{ route('resident.show', $resident->id) }}" class="btn btn-info btn-sm">
+                            👁 Detail
+                        </a>
 
-                            <form action="{{ route('resident.destroy', $resident->id) }}" method="POST" class="d-inline"
-                                  onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm">🗑 Hapus</button>
-                            </form>
-                        </td>
+                    </td>
+
                     </tr>
                     @empty
                     <tr>

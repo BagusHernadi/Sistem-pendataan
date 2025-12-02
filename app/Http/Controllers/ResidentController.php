@@ -32,7 +32,12 @@ class ResidentController extends Controller
             'occupation' => ['nullable','max:100'],
             'phone' => ['nullable','max:15'],
             'status' => ['required', Rule::in(['active','moved','deceased'])],
+            'photo' => 'image|mimes:jpg,jpeg,png|max:2048'
         ]);
+
+        if($request->hasFile('photo')){
+        $validated['photo'] = $request->photo->store('resident_photo', 'public');
+        }
 
         Resident::create($validated);
 

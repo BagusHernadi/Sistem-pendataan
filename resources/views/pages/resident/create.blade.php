@@ -10,7 +10,7 @@
 
     <div class="card-body">
 
-        <form action="{{ route('resident.store') }}" method="POST">
+        <form action="{{ route('resident.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="row">
@@ -81,6 +81,11 @@
                         <option value="deceased">Meninggal</option>
                     </select>
                 </div>
+                <div class="form-group mt-3">
+                        <label for="photo">Foto Anggota</label>
+                        <input type="file" name="photo" class="form-control" accept="image/*">
+                        <small class="text-muted">Format: JPG, PNG, Max 2MB</small>
+            </div>
 
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>

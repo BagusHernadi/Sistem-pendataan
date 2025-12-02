@@ -33,26 +33,12 @@
             <span>Anggota</span></a>
     </li>
 
+
     <!-- Nav Item - Laporan -->
     <li class="nav-item">
-        <a class="nav-link" href="/laporan">
-            <i class="fas fa-chart-bar"></i>
-            <span>Surat Administrasi</span></a>
-    </li>
-
-    <!-- Nav Item - Surat Administrasi -->
-    <li class="nav-item">
-        <a class="nav-link" href="/surat">
-            <i class="fas fa-envelope-open-text"></i>
+        <a class="nav-link" href="/report_overview">
+            <i class="fas fa-fw fa-file-alt"></i>
             <span>Laporan</span></a>
-    </li>
-
-    <!-- Nav Item - Pengaturan Sistem -->
-    <li class="nav-item">
-        <a class="nav-link" href="/settings">
-            <i class="fas fa-cogs"></i>
-            <span>Pengaturan Sistem</span></a>
-    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
