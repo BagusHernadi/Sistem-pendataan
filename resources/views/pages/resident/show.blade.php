@@ -46,14 +46,13 @@
 
         <h5 class="mt-4 font-weight-bold text-primary">Foto Anggota</h5>
         <div class="text-center">
-            @if($resident->photo && file_exists(public_path('storage/resident_photo/'.$resident->photo)))
-                <img src="{{ asset('storage/resident_photo/'.$resident->photo) }}" width="120" class="img-thumbnail">
-            @else
-                <img src="https://via.placeholder.com/120" width="120" class="img-thumbnail">
-            @endif
-            <td>
-                <img src="{{ $resident->photo }}" alt="Foto {{ $resident->name }}" width="100">
-            </td>
+        @if($resident->photo)
+            <img src="{{ asset('storage/photos/' . $resident->photo) }}" alt="Foto {{ $resident->name }}" class="img-fluid" style="max-height: 300px;">
+        @else   
+            <p>Tidak ada foto</p>
+        @endif
+
+
         </div>
 
 

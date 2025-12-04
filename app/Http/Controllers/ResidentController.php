@@ -60,8 +60,8 @@ public function show($id)
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nik' => ['required','min:16','max:16'],
             'name' => ['required','max:100'],
+            'nik' => ['required','min:16','max:16'],
             'gender' => ['required', Rule::in(['male','female'])],
             'birth_place' => ['required','max:100'],
             'birtch_date' => ['required','date'],   // tetap mengacu nama DB
@@ -85,6 +85,24 @@ public function show($id)
         return redirect()->route('resident.index')->with('success','Data berhasil dihapus');
     }
 
-    
+    public function laporan()
+    {
+    $residents = Resident::all();
+
+    $genderCount = [
+        'Laki-laki' => Resident::where('gender', 'male')->count(),
+        'Perempuan' => Resident::where('gender', 'female')->count(),
+    ];
+
+    $statusCount = [
+        'Aktif' => Resident::where('status', 'active')->count(),
+        'Pindah' => Resident::where('status', 'moved')->count(),
+        'Meninggal' => Resident::where('status', 'deceased')->count(),
+    ];
+
+    return view('pages.resident.laporan', compact('residents', 'genderCount', 'statusCount'));
+    }
+
+
 }
 

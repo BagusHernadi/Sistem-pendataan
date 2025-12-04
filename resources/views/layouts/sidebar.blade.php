@@ -36,7 +36,7 @@
 
     <!-- Nav Item - Laporan -->
     <li class="nav-item">
-        <a class="nav-link" href="/report_overview">
+        <a class="nav-link" href="{{ route('resident.laporan') }}">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Laporan</span></a>
 

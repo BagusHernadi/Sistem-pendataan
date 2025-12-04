@@ -4,7 +4,9 @@
 <div class="container">
     <h2>Edit Data</h2>
 
-    <form action="{{ route('resident.update', $resident->id) }}" method="POST">
+    <form action="{{ route('resident.update', $resident->id) }}" 
+          method="POST" 
+          enctype="multipart/form-data"> {{-- WAJIB --}}
         @csrf
         @method('PUT')
 
@@ -49,10 +51,10 @@
         <div class="mb-2">
             <label>Status Perkawinan</label>
             <select name="marital_status" class="form-control">
-                <option {{ $resident->marital_status=='single'?'selected':'' }}>single</option>
-                <option {{ $resident->marital_status=='married'?'selected':'' }}>married</option>
-                <option {{ $resident->marital_status=='divorced'?'selected':'' }}>divorced</option>
-                <option {{ $resident->marital_status=='widowed'?'selected':'' }}>widowed</option>
+                <option value="single" {{ $resident->marital_status=='single'?'selected':'' }}>single</option>
+                <option value="married" {{ $resident->marital_status=='married'?'selected':'' }}>married</option>
+                <option value="divorced" {{ $resident->marital_status=='divorced'?'selected':'' }}>divorced</option>
+                <option value="widowed" {{ $resident->marital_status=='widowed'?'selected':'' }}>widowed</option>
             </select>
         </div>
 
@@ -69,17 +71,23 @@
         <div class="mb-2">
             <label>Status Anggota</label>
             <select name="status" class="form-control">
-                <option {{ $resident->status=='active'?'selected':'' }}>active</option>
-                <option {{ $resident->status=='moved'?'selected':'' }}>moved</option>
-                <option {{ $resident->status=='deceased'?'selected':'' }}>deceased</option>
+                <option value="active" {{ $resident->status=='active'?'selected':'' }}>active</option>
+                <option value="moved" {{ $resident->status=='moved'?'selected':'' }}>moved</option>
+                <option value="deceased" {{ $resident->status=='deceased'?'selected':'' }}>deceased</option>
             </select>
         </div>
+
+        {{-- FOTO --}}
         @if($resident->photo)
-        <img src="{{ asset('storage/'.$resident->photo) }}" width="100" class="mb-2"><br>
+            <p>Foto saat ini:</p>
+            <img src="{{ asset('storage/'.$resident->photo) }}" 
+                 width="120" class="img-thumbnail mb-2">
         @endif
 
-        <input type="file" name="photo" accept="image/*">
-
+        <div class="mb-2">
+            <label>Ganti Foto (optional)</label>
+            <input type="file" name="photo" class="form-control" accept="image/*">
+        </div>
 
         <button type="submit" class="btn btn-primary mt-3">Update</button>
         <a href="{{ route('resident.index') }}" class="btn btn-secondary mt-3">Kembali</a>

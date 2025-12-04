@@ -10,8 +10,18 @@
     </a>
 </div>
 
-<!-- Export Buttons -->
-<a class="btn btn-success btn-sm" href="{{ route('resident.excel') }}">Export Excel</a>
+<!-- Pencarian -->
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form action="{{ route('resident.index') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Cari berdasarkan NIK atau Nama" value="{{ request('search') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Cari</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 <!-- Data Table -->
 <div class="card shadow mb-4">

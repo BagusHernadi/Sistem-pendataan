@@ -83,11 +83,12 @@
                 </div>
                 <div class="form-group mt-3">
                         <label for="photo">Foto Anggota</label>
-                        <input type="file" name="photo" class="form-control" accept="image/*">
+                        <input type="file" name="" class="form-control" accept="image/*">
                         <small class="text-muted">Format: JPG, PNG, Max 2MB</small>
             </div>
 
             </div>
+            
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>

@@ -1,23 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Exports\ResidentExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Resident;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ExportController extends Controller
 {
-    public function exportPdf()
+       public function pdf()
     {
-        $residents = Resident::latest()->get();
+    
+        
+        $genderCount = [
+            'Laki-laki' => Resident::where('gender', 'male')->count(),
+            'Perempuan' => Resident::where('gender', 'female')->count(),
+        ];
 
-        $pdf = Pdf::loadView('exports.resident', [
-            'residents' => $residents
-        ]);
+        $statusCount = [
+            'Single' => Resident::where('marital_status', 'single')->count(),
+            'Married' => Resident::where('marital_status', 'married')->count(),
+            'Divorced' => Resident::where('marital_status', 'divorced')->count(),
+            'Widowed' => Resident::where('marital_status', 'widowed')->count(),
+        ];
 
-        return $pdf->download('Residents.pdf');
+        return Pdf::loadView('exports.resident-pdf', compact(   'genderCount', 'statusCount'))
+                ->setPaper('a4', 'portrait')
+                ->download('laporan_penduduk.pdf');
     }
 
     public function excel()

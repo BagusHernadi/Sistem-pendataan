@@ -1,26 +1,13 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ResidentController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect ke login jika belum login
 Route::get('/', function () {
     return redirect()->route('login.page');
-});
-
-// Halaman Dashboard (hanya untuk user login)
-Route::middleware('auth')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return view('pages.dashboard');
-    })->name('dashboard');
-
-    Route::resource('resident', ResidentController::class);
-    
-    Route::get('/resident/export/resident.excel',[ExportController::class,'excel'])->name('resident.excel');
-    Route::get('/resident/export/resident.pdf', [ExportController::class, 'Pdf'])->name('resident.pdf');
 });
 
 // Route Auth
@@ -30,8 +17,21 @@ Route::get('/register', [AuthController::class, 'registerPage'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Route show detail
-Route::get('/resident/{id}', [ResidentController::class, 'show'])->name('resident.show');
+// Route setelah login
+Route::middleware('auth')->group(function () {
 
-// Route laporan overview
-Route::get('/report_overview', [ResidentController::class, 'overview'])->name('report_overview');
+    Route::get('/dashboard', function () {
+        return view('pages.dashboard');
+    })->name('dashboard');
+
+     // Halaman laporan
+    Route::get('/resident/laporan', [ResidentController::class, 'laporan'])
+        ->name('resident.laporan');
+
+    // Resource route (INI SUDAH TERMASUK show)
+    Route::resource('resident', ResidentController::class);
+
+    // Export
+    Route::get('/resident/export/excel', [ExportController::class, 'excel'])->name('resident.excel');
+    Route::get('/resident/export/pdf', [ExportController::class, 'pdf'])->name('resident.pdf');
+});

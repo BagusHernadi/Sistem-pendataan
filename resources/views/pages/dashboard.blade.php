@@ -104,9 +104,10 @@
 
         <div class="menu-wrap">
             <a href="{{ route('resident.index') }}" class="menu-card">Kelola Data</a>
-            <a href="{{ route('report_overview') }}" class="menu-card">Laporan</a>
+           
         </div>
     </div>
 </div>
+
 
 @endsection
