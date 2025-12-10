@@ -81,11 +81,39 @@
                         <option value="deceased">Meninggal</option>
                     </select>
                 </div>
-                <div class="form-group mt-3">
-                        <label for="photo">Foto Anggota</label>
-                        <input type="file" name="" class="form-control" accept="image/*">
-                        <small class="text-muted">Format: JPG, PNG, Max 2MB</small>
-            </div>
+                <div class="col-12 mb-3">
+                    <label for="photo">Foto Anggota</label>
+                    <div class="text-center mb-2">
+                        <img id="photoPreview" src="#" alt="Preview" class="img-thumbnail" style="max-height: 200px; display: none;">
+                    </div>
+                    <input type="file" name="photo" id="photo" class="form-control" accept="image/*" onchange="previewImage(this)" required>
+                    <small class="text-muted">Format: JPG, PNG, Max 2MB</small>
+                    @error('photo')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                @push('scripts')
+                <script>
+                function previewImage(input) {
+                    const preview = document.getElementById('photoPreview');
+                    const file = input.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.src = '#';
+                        preview.style.display = 'none';
+                    }
+                }
+                </script>
+                @endpush
 
             </div>
             

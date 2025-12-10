@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Resident;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ResidentController extends Controller
@@ -25,23 +27,26 @@ class ResidentController extends Controller
             'name' => ['required','max:100'],
             'gender' => ['required', Rule::in(['male','female'])],
             'birth_place' => ['required','max:100'],
-            'birtch_date' => ['required','date'],   // sesuai database
+            'birtch_date' => ['required','date'],
             'address' => ['required','max:700'],
             'religion' => ['nullable','max:50'],
             'marital_status' => ['required', Rule::in(['single','married','divorced','widowed'])],
             'occupation' => ['nullable','max:100'],
             'phone' => ['nullable','max:15'],
             'status' => ['required', Rule::in(['active','moved','deceased'])],
-            'photo' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        if($request->hasFile('photo')){
-        $validated['photo'] = $request->photo->store('resident_photo', 'public');
+        // Handle file upload
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('resident_photos', 'public');
+            $validated['photo'] = $path; // Store the relative path
         }
 
         Resident::create($validated);
 
-        return redirect()->route('resident.index')->with('success','Data berhasil ditambahkan');
+        return redirect()->route('resident.index')
+            ->with('success', 'Data berhasil disimpan');
     }
 
 
@@ -64,25 +69,49 @@ public function show($id)
             'nik' => ['required','min:16','max:16'],
             'gender' => ['required', Rule::in(['male','female'])],
             'birth_place' => ['required','max:100'],
-            'birtch_date' => ['required','date'],   // tetap mengacu nama DB
+            'birtch_date' => ['required','date'],
             'address' => ['required','max:700'],
             'religion' => ['nullable','max:50'],
             'marital_status' => ['required', Rule::in(['single','married','divorced','widowed'])],
             'occupation' => ['nullable','max:100'],
             'phone' => ['nullable','max:15'],
             'status' => ['required', Rule::in(['active','moved','deceased'])],
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        Resident::findOrFail($id)->update($validated);
+        $resident = Resident::findOrFail($id);
+        
+        // Handle file upload
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($resident->photo && Storage::disk('public')->exists($resident->photo)) {
+                Storage::disk('public')->delete($resident->photo);
+            }
+            // Store new photo
+            $path = $request->file('photo')->store('resident_photos', 'public');
+            $validated['photo'] = $path;
+        }
 
-        return redirect()->route('resident.index')->with('success','Data berhasil diperbarui');
+        $resident->update($validated);
+
+        return redirect()->route('resident.index')
+            ->with('success', 'Data berhasil diperbarui');
     }
 
     
     public function destroy($id)
     {
-        Resident::findOrFail($id)->delete();
-        return redirect()->route('resident.index')->with('success','Data berhasil dihapus');
+        $resident = Resident::findOrFail($id);
+        
+        // Delete the photo file if it exists
+        if ($resident->photo && Storage::disk('public')->exists($resident->photo)) {
+            Storage::disk('public')->delete($resident->photo);
+        }
+        
+        $resident->delete();
+        
+        return redirect()->route('resident.index')
+            ->with('success', 'Data berhasil dihapus');
     }
 
     public function laporan()

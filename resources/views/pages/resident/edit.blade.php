@@ -77,17 +77,57 @@
             </select>
         </div>
 
-        {{-- FOTO --}}
-        @if($resident->photo)
-            <p>Foto saat ini:</p>
-            <img src="{{ asset('storage/'.$resident->photo) }}" 
-                 width="120" class="img-thumbnail mb-2">
-        @endif
-
-        <div class="mb-2">
-            <label>Ganti Foto (optional)</label>
-            <input type="file" name="photo" class="form-control" accept="image/*">
+        <div class="mb-3">
+            <label class="form-label">Foto Anggota</label>
+            <div class="text-center mb-2">
+                @if($resident->photo && Storage::disk('public')->exists($resident->photo))
+                    <img id="currentPhoto" 
+                         src="{{ Storage::url($resident->photo) }}" 
+                         alt="Current Photo" 
+                         class="img-thumbnail" 
+                         style="max-height: 200px;">
+                @endif
+                <img id="photoPreview" 
+                     src="#" 
+                     alt="New Photo Preview" 
+                     class="img-thumbnail" 
+                     style="max-height: 200px; display: none;">
+            </div>
+            <input type="file" 
+                   name="photo" 
+                   id="photo" 
+                   class="form-control" 
+                   accept="image/*" 
+                   onchange="previewImage(this)">
+            <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto. Format: JPG, PNG, Max 2MB</small>
+            @error('photo')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
+
+        @push('scripts')
+        <script>
+        function previewImage(input) {
+            const currentPhoto = document.getElementById('currentPhoto');
+            const preview = document.getElementById('photoPreview');
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                if (currentPhoto) currentPhoto.style.display = 'none';
+            }
+            
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                if (currentPhoto) currentPhoto.style.display = 'block';
+            }
+        }
+        </script>
+        @endpush
 
         <button type="submit" class="btn btn-primary mt-3">Update</button>
         <a href="{{ route('resident.index') }}" class="btn btn-secondary mt-3">Kembali</a>

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 @section('content')
 
 <!-- Page Heading -->
@@ -44,15 +48,25 @@
             </tr>
         </table>
 
-        <h5 class="mt-4 font-weight-bold text-primary">Foto Anggota</h5>
-        <div class="text-center">
-        @if($resident->photo)
-            <img src="{{ asset('storage/photos/' . $resident->photo) }}" alt="Foto {{ $resident->name }}" class="img-fluid" style="max-height: 300px;">
-        @else   
-            <p>Tidak ada foto</p>
-        @endif
-
-
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="font-weight-bold text-primary mb-3">Foto Anggota</h5>
+                <div class="text-center">
+                    @if($resident->photo)
+                        <img src="{{ $resident->photo_url }}" 
+                             alt="Foto {{ $resident->name }}" 
+                             class="img-fluid rounded shadow" 
+                             style="max-height: 300px;">
+                        <div class="mt-2 text-muted">
+                            <small>File: {{ basename($resident->photo) }}</small>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Tidak ada foto yang diunggah
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
 
 
@@ -64,6 +78,12 @@
                 <button class="btn btn-danger">🗑 Hapus</button>
             </form>
         </div>
+
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
     </div>
 </div>
